@@ -18,16 +18,16 @@ services:
         ipv4_address: 172.21.0.3
 
 
-  redis-slave-1:
-    image: redis:latest
-    container_name: redis-slave-1
-    hostname: redis-slave-1
+  redis-replica-1:
+    image: redis
+    container_name: redis-replica-1
+    hostname: redis-replica-1
     depends_on:
       - redis-master
     ports:
       - "6380:6379"
     volumes:
-      - ./data/slave1:/data
+      - ./data/replica1:/data
     command:
       [
         "redis-server",
@@ -35,31 +35,23 @@ services:
         "yes",
         "--replicaof",
         "redis-master",
-        "6379",
-        "--repl-diskless-load",
-        "on-empty-db",
-        "--replica-announce-ip",
-        "${HOST_IP}",
-        "--replica-announce-port",
-        "6380",
-        "--protected-mode",
-        "no"
+        "6379"
       ]
     networks:
       redis-net:
         ipv4_address: 172.21.0.4
 
 
-  redis-slave-2:
-    image: redis:latest
-    container_name: redis-slave-2
-    hostname: redis-slave-2
+  redis-replica-2:
+    image: redis
+    container_name: redis-replica-2
+    hostname: redis-replica-2
     depends_on:
       - redis-master
     ports:
       - "6381:6379"
     volumes:
-      - ./data/slave2:/data
+      - ./data/replica2:/data
     command:
       [
         "redis-server",
@@ -67,32 +59,25 @@ services:
         "yes",
         "--replicaof",
         "redis-master",
-        "6379",
-        "--repl-diskless-load",
-        "on-empty-db",
-        "--replica-announce-ip",
-        "${HOST_IP}",
-        "--replica-announce-port",
-        "6381",
-        "--protected-mode",
-        "no"
+        "6379"
       ]
     networks:
       redis-net:
         ipv4_address: 172.21.0.5
 
-
   sentinel-1:
-    image: redis:latest
+    image: redis
     container_name: sentinel-1
     hostname: sentinel-1
     depends_on:
       - redis-master
     ports:
       - "26379:26379"
+    environment:
+      - HOST_IP=172.21.0.3
     command: >
       sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
-            echo "sentinel monitor mymaster ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel monitor mymaster $HOST_IP 6379 2" >> /etc/sentinel.conf &&
             echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
             echo "sentinel down-after-milliseconds mymaster 10000" >> /etc/sentinel.conf &&
             echo "sentinel failover-timeout mymaster 10000" >> /etc/sentinel.conf &&
@@ -102,18 +87,19 @@ services:
       redis-net:
         ipv4_address: 172.21.0.6
 
-
   sentinel-2:
-    image: redis:latest
+    image: redis
     container_name: sentinel-2
     hostname: sentinel-2
     depends_on:
       - redis-master
     ports:
       - "26380:26379"
+    environment:
+      - HOST_IP=172.21.0.3
     command: >
       sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
-            echo "sentinel monitor mymaster ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel monitor mymaster $HOST_IP 6379 2" >> /etc/sentinel.conf &&
             echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
             echo "sentinel down-after-milliseconds mymaster 10000" >> /etc/sentinel.conf &&
             echo "sentinel failover-timeout mymaster 10000" >> /etc/sentinel.conf &&
@@ -124,16 +110,18 @@ services:
         ipv4_address: 172.21.0.7
 
   sentinel-3:
-    image: redis:latest
+    image: redis
     container_name: sentinel-3
     hostname: sentinel-3
     depends_on:
       - redis-master
     ports:
       - "26381:26379"
+    environment:
+      - HOST_IP=172.21.0.3
     command: >
       sh -c 'echo "bind 0.0.0.0" > /etc/sentinel.conf &&
-            echo "sentinel monitor mymaster ${HOST_IP} 6379 2" >> /etc/sentinel.conf &&
+            echo "sentinel monitor mymaster $HOST_IP 6379 2" >> /etc/sentinel.conf &&
             echo "sentinel resolve-hostnames yes" >> /etc/sentinel.conf &&
             echo "sentinel down-after-milliseconds mymaster 10000" >> /etc/sentinel.conf &&
             echo "sentinel failover-timeout mymaster 10000" >> /etc/sentinel.conf &&
@@ -143,9 +131,8 @@ services:
       redis-net:
         ipv4_address: 172.21.0.8
 
-
   redisinsight:
-    image: redis/redisinsight:latest
+    image: redis/redisinsight
     container_name: redisinsight
     ports:
       - "5540:5540"
@@ -158,4 +145,4 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 172.21.0.0/16
+        - subnet: 172.21.0.0/24

@@ -8,16 +8,19 @@ services:
     ports:
       - 6379:6379
 
-  redis-slave1:
+  redis-replica1:
     image: redis
-    container_name: redis-slave1
+    container_name: redis-replica1
     restart: always
     volumes:
-      - redis_slave1:/data
+      - redis_replica1:/data
     ports:
       - 6479:6379
-    command: redis-server --slaveof redis-master 6379
+    command: redis-server --replicaof redis-master 6379
 volumes:
   redis_master:
-  redis_slave1:
+  redis_replica1:
+networks:
+  redis-net:
+    driver: bridge
   
