@@ -1,0 +1,20 @@
+services:
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb-server
+    ports:
+      - "8000:8000"
+    environment:
+      - IS_PERSISTENT=TRUE
+      - CHROMA_SERVER_HOST=0.0.0.0
+      - CHROMA_SERVER_HTTP_PORT=8000
+      - CHROMA_SERVER_CORS_ALLOW_ORIGINS=['*']
+    networks:
+     - chroma-net
+    volumes:
+      - ./chroma_data:/chroma/chroma
+    restart: unless-stopped
+networks:
+  chroma-net:
+   external: true
+   driver: bridge
