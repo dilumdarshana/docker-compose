@@ -12,4 +12,4 @@ services:
     networks:
      - chroma-net
     volumes:
-       - n8n_data:/home/node/.n8n
+       - ./n8n_data:/home/node/.n8n
