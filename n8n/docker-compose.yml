@@ -1,0 +1,15 @@
+services:
+  chromadb:
+    image: docker.n8n.io/n8nio/n8n
+    container_name: my-n8n-workflow
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=admin123
+      - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+    networks:
+     - chroma-net
+    volumes:
+       - n8n_data:/home/node/.n8n
