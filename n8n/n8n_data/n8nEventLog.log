@@ -1,2 +1,0 @@
-{"__type":"$$EventMessageAudit","id":"caabaafc-8de4-43a6-a984-c5e1a2d70b2c","ts":"2025-07-13T02:43:49.047+00:00","eventName":"n8n.audit.user.login.success","message":"n8n.audit.user.login.success","payload":{"userId":"efeb95f9-a7b9-40cf-aa23-1293dfb37105","_email":"dilum.dar@gmail.com","_firstName":"Dilum","_lastName":"Darshana","globalRole":"global:owner","authenticationMethod":"email"}}
-{"__type":"$$EventMessageConfirm","confirm":"caabaafc-8de4-43a6-a984-c5e1a2d70b2c","ts":"2025-07-13T02:43:49.077+00:00","source":{"id":"0","name":"eventBus"}}
