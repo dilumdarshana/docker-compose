@@ -2,13 +2,17 @@ services:
   n8n:
     image: docker.n8n.io/n8nio/n8n
     container_name: my-n8n-workflow
+    restart: always
     ports:
       - "5678:5678"
     environment:
-      - N8N_BASIC_AUTH_ACTIVE=false
-      - N8N_USER_MANAGEMENT_DISABLED=true
-      - N8N_EMAIL=test@test.com
-      - N8N_PASSWORD=admin123
+      # - DOMAIN_NAME=example.com
+      # - SUBDOMAIN=n8n
+      # - N8N_HOST=n8n.example.com
+      # - N8N_PROTOCOL=https
+      # - N8N_PORT=5678
+      # - WEBHOOK_URL=https://n8n.example.com
+      # - NODE_ENV=production
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
       - N8N_SECURE_COOKIE=false
     volumes:
