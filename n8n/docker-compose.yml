@@ -11,9 +11,13 @@ services:
       # - N8N_HOST=n8n.example.com
       # - N8N_PROTOCOL=https
       # - N8N_PORT=5678
-      # - WEBHOOK_URL=https://n8n.example.com
       # - NODE_ENV=production
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
       - N8N_SECURE_COOKIE=false
+      - N8N_EDITOR_BASE_URL=https://mistakenly-worthy-glowworm.ngrok-free.app
+      - N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
+      - WEBHOOK_URL=https://mistakenly-worthy-glowworm.ngrok-free.app
+      - N8N_DEFAULT_BINARY_DATA_MODE=filesystem
+
     volumes:
       - ./n8n_data:/home/node/.n8n
