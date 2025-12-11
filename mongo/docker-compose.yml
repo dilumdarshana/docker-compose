@@ -1,0 +1,15 @@
+services:
+  mongo:
+    image: mongo
+    container_name: mongo-database
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - ./mongodb_data:/data/db
+volumes:
+  mongodb_data: # Define the named volume
+    driver: local
