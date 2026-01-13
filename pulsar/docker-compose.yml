@@ -1,0 +1,47 @@
+services:
+  pulsar:
+    image: apachepulsar/pulsar
+    container_name: pulsar
+    hostname: pulsar
+    ports:
+      - 6650:6650   # Pulsar broker port
+      - 8080:8080   # Pulsar admin REST API and web dashboard
+    environment:
+      - PULSAR_MEM=-Xms512m -Xmx512m -XX:MaxDirectMemorySize=256m
+    command: >
+      bin/pulsar standalone
+    volumes:
+      - pulsar-data:/pulsar/data
+      - pulsar-conf:/pulsar/conf
+    healthcheck:
+      test: ["CMD", "bin/pulsar-admin", "brokers", "healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - pulsar-network
+
+  # Optional: Pulsar Manager for Web UI management
+  pulsar-manager:
+    image: apachepulsar/pulsar-manager:v0.4.0
+    container_name: pulsar-manager
+    ports:
+      - 9527:9527   # Pulsar Manager UI
+      - 7750:7750
+    environment:
+      - SPRING_CONFIGURATION_FILE=/pulsar-manager/pulsar-manager/application.properties
+    depends_on:
+      - pulsar
+    networks:
+      - pulsar-network
+
+volumes:
+  pulsar-data:
+    driver: local
+  pulsar-conf:
+    driver: local
+
+networks:
+  pulsar-network:
+    driver: bridge
