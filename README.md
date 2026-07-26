@@ -67,6 +67,33 @@ docker compose -f mongo/docker-compose.yml up -d
 
 ---
 
+### PostgreSQL
+
+Relational database. Runs on port `5432`.
+
+```bash
+# 1. Set credentials
+cp postgres/.env_example postgres/.env
+# Edit postgres/.env with your user, password, and database name
+
+# 2. Start
+docker compose -f postgres/docker-compose.yml up -d
+```
+
+| Port  | Usage      |
+|-------|------------|
+| 5432  | Database   |
+
+| Variable            | Default   |
+|---------------------|-----------|
+| `POSTGRES_USER`     | postgres  |
+| `POSTGRES_PASSWORD` | postgres  |
+| `POSTGRES_DB`       | postgres  |
+
+- Data stored in `postgres/postgres_data/`
+
+---
+
 ### n8n
 
 Workflow automation tool. Runs on port `5678`.

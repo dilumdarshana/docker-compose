@@ -15,9 +15,10 @@ docker compose -f <service>/docker-compose.yml up -d
 ## .env setup required before first start
 
 **n8n** — copy `n8n/.env_example` to `n8n/.env`, then edit timezone.
+**PostgreSQL** — copy `postgres/.env_example` to `postgres/.env`, then edit credentials.
 **Redis standalone** — copy `redis/.env_example` to `redis/.env`, then edit password.
 
-The above two will fail to start if `.env` is missing.
+The above will fail to start if `.env` is missing.
 
 ## Services at a glance
 
@@ -26,6 +27,7 @@ The above two will fail to start if `.env` is missing.
 | ChromaDB    | `chromadb/server-docker-compose.yml` | 8000                              | `chromadb/chroma_data/` (bind) |
 | Floci       | `floci/docker-compose.yml`           | 4566                              | `floci/data/` (bind)    |
 | MongoDB     | `mongo/docker-compose.yml`           | 27017                             | `mongo/mongodb_data/` (bind) |
+| PostgreSQL  | `postgres/docker-compose.yml`        | 5432                              | `postgres/postgres_data/` (bind) |
 | n8n         | `n8n/docker-compose.yml`             | 5678                              | `n8n/n8n_data/` (bind)  |
 | NATS        | `nats/docker-compose.yml`            | 4222, 8222, 6222                  | named volume            |
 | Pulsar      | `pulsar/docker-compose.yml`          | 6650, 8080, 9527                  | named volumes           |
@@ -49,7 +51,7 @@ The above two will fail to start if `.env` is missing.
 service-name/
 ├── docker-compose.yml          # main compose file
 ├── .env_example                # copy to .env before starting (n8n, redis only)
-├── .gitignore                  # local: redis/data; root: .env, n8n_data, mongodb_data
+├── .gitignore                  # local: redis/data; root: .env, n8n_data, mongodb_data, postgres_data
 └── data/                       # persistent data (bind mounts) — gitignored
 ```
 
