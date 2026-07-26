@@ -1,24 +1,29 @@
+# Redis service for local development / caching
 services:
   redis:
-    image: redis:latest
+    image: redis:latest # Pin to a specific version in production, e.g. redis:7.2-alpine
     container_name: my-redis
     ports:
-      - "6379:6379"
-    environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-    command:
-      - "--appendonly yes"  # Enable data persistence
-      - "--appendfilename redis-data.aof"  # Set the AOF filename
-      - "--dir /data"  # Set the working directory for AOF files
-      - "--requirepass ${REDIS_PASSWORD}"  # Set Redis password
+      - "6379:6379" # host:container — change host port if 6379 is taken locally
+
+    # Persistence + auth config passed as redis-server CLI args
+    command: >
+      redis-server
+      --appendonly yes
+      --appendfilename redis-data.aof
+      --dir /data
+      --requirepass ${REDIS_PASSWORD}
     volumes:
-      - redis-data:/data
-    restart: unless-stopped
+      - redis-data:/data # named volume so data survives container recreation
+
+    restart: unless-stopped # auto-restart unless you manually stop it
+
+    # Confirms Redis is actually accepting authenticated commands, not just that the process is alive
     healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "--raw", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
-  redis-data:
+  redis-data: # managed by Docker, lives under /var/lib/docker/volumes/
