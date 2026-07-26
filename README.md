@@ -91,6 +91,7 @@ docker compose -f postgres/docker-compose.yml up -d
 | `POSTGRES_DB`       | postgres  |
 
 - Data stored in `postgres/postgres_data/`
+- Healthcheck via `pg_isready` (10s interval, 5 retries)
 
 ---
 
