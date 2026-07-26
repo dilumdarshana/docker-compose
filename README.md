@@ -202,7 +202,7 @@ docker exec redis-master redis-cli INFO replication
 ## Useful Commands
 
 ```bash
-# Start all services
+# Start a service
 docker compose -f <path>/docker-compose.yml up -d
 
 # View logs
