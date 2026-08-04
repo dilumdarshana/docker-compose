@@ -5,6 +5,26 @@
 $ docker-compose -f replica-docker-compose.yml up
 ```
 
+## Redis Cluster
+
+6 nodes (3 masters + 3 replicas) on a dedicated `172.22.0.0/24` network.
+
+```bash
+# start all nodes
+$ docker compose -f cluster-docker-compose.yml up -d
+
+# create the cluster once (after all nodes are up)
+$ docker exec -it redis-cluster-1 redis-cli --cluster create \
+    redis-cluster-1:6379 redis-cluster-2:6379 redis-cluster-3:6379 \
+    redis-cluster-4:6379 redis-cluster-5:6379 redis-cluster-6:6379 \
+    --cluster-replicas 1
+
+# connect with cluster mode
+$ redis-cli -c -p 7001
+```
+
+Host ports 7001-7006 map to each node's internal 6379. Data persists in `data/cluster-<n>/`.
+
 ## Test sentinels works
 
 ```bash

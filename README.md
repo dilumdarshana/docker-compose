@@ -225,6 +225,51 @@ docker start redis-master
 docker exec redis-master redis-cli INFO replication
 ```
 
+#### Cluster (Sharded)
+
+6 nodes (3 masters + 3 replicas) on a dedicated `172.22.0.0/24` network.
+
+```bash
+docker compose -f redis/cluster-docker-compose.yml up -d
+
+# Create the cluster once (after all nodes are up)
+docker exec -it redis-cluster-1 redis-cli --cluster create \
+  redis-cluster-1:6379 redis-cluster-2:6379 redis-cluster-3:6379 \
+  redis-cluster-4:6379 redis-cluster-5:6379 redis-cluster-6:6379 \
+  --cluster-replicas 1
+
+# Connect with cluster mode
+redis-cli -c -p 7001
+```
+
+| Port  | Usage          |
+|-------|----------------|
+| 7001  | Node 1         |
+| 7002  | Node 2         |
+| 7003  | Node 3         |
+| 7004  | Node 4         |
+| 7005  | Node 5         |
+| 7006  | Node 6         |
+
+- AOF persistence enabled
+- Data stored in `redis/data/cluster-<n>/`
+- Nodes advertise their container hostname so cluster commands work inside the network
+
+```bash
+# Check who is master
+docker exec sentinel-1 redis-cli -p 26379 SENTINEL get-master-addr-by-name mymaster
+
+# Simulate master failure
+docker stop redis-master
+
+# After ~10s, check the new master
+docker exec sentinel-1 redis-cli -p 26379 SENTINEL get-master-addr-by-name mymaster
+
+# Bring old master back — it rejoins as a replica
+docker start redis-master
+docker exec redis-master redis-cli INFO replication
+```
+
 ---
 
 ## Useful Commands

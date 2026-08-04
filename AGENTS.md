@@ -34,11 +34,12 @@ The above will fail to start if `.env` is missing.
 | Redis solo  | `redis/docker-compose.yml`           | 6379                              | named volume            |
 | Redis pair  | `redis/replica-docker-compose.yml`   | 6379, 6479                        | named volumes           |
 | Redis HA    | `redis/sentinel-docker-compose.yml`  | 6379-6381, 26379-26381, 5540      | `redis/data/` (bind)    |
+| Redis Cluster | `redis/cluster-docker-compose.yml` | 7001-7006                        | `redis/data/` (bind)    |
 
 ## Notable quirks
 
 - **Redis Sentinel** — hardcoded static IPs on `172.21.0.0/24`. The sentinel config is generated dynamically via shell commands in each container's `command:`.
-- **Redis Cluster** — `redis/cluster-docker-compose.yml` is empty (not implemented).
+- **Redis Cluster** — 6 nodes on `172.22.0.0/24`; nodes advertise their container hostname via `--cluster-announce-*`. The cluster must be created once with `redis-cli --cluster create` after `up -d`.
 - **Chromadb** — CORS allow origins set to `['*']` (permissive; tighten for production).
 - **Floci** — mounts the host Docker socket (`/var/run/docker.sock`).
 - **n8n** — contains hardcoded ngrok URLs in env vars (`N8N_EDITOR_BASE_URL`, `WEBHOOK_URL`). Replace these for your own tunnel.
