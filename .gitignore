@@ -3,3 +3,4 @@
 n8n/n8n_data/*
 mongo/mongodb_data/*
 postgres/postgres_data/*
+qdrant/qdrant_data/*

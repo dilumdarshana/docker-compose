@@ -28,6 +28,7 @@ The above will fail to start if `.env` is missing.
 | Floci       | `floci/docker-compose.yml`           | 4566                              | `floci/data/` (bind)    |
 | MongoDB     | `mongo/docker-compose.yml`           | 27017                             | `mongo/mongodb_data/` (bind) |
 | PostgreSQL  | `postgres/docker-compose.yml`        | 5432                              | `postgres/postgres_data/` (bind) |
+| Qdrant      | `qdrant/docker-compose.yml`          | 6333, 6334                        | `qdrant/qdrant_data/` (bind) |
 | n8n         | `n8n/docker-compose.yml`             | 5678                              | `n8n/n8n_data/` (bind)  |
 | NATS        | `nats/docker-compose.yml`            | 4222, 8222, 6222                  | named volume            |
 | Pulsar      | `pulsar/docker-compose.yml`          | 6650, 8080, 9527                  | named volumes           |

@@ -29,6 +29,24 @@ docker compose -f chromadb/server-docker-compose.yml up -d
 
 ---
 
+### Qdrant
+
+Vector database for AI/ML applications. Runs on ports `6333` (REST) and `6334` (gRPC).
+
+```bash
+docker compose -f qdrant/docker-compose.yml up -d
+```
+
+| Port  | Usage      |
+|-------|------------|
+| 6333  | REST API   |
+| 6334  | gRPC API   |
+
+- Persistent data stored in `qdrant/qdrant_data/`
+- Healthcheck via `/healthz` (10s interval, 5 retries)
+
+---
+
 ### Floci
 
 Local AI inference server. Runs on port `4566`.
