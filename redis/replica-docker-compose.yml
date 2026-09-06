@@ -1,6 +1,6 @@
 services:
   redis-master:
-    image: redis
+    image: redis:8-alpine
     container_name: redis-master
     restart: always
     volumes:
@@ -9,7 +9,7 @@ services:
       - 6379:6379
 
   redis-replica1:
-    image: redis
+    image: redis:8-alpine
     container_name: redis-replica1
     restart: always
     volumes:

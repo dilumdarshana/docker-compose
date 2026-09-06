@@ -1,6 +1,6 @@
 services:
   pulsar:
-    image: apachepulsar/pulsar
+    image: apachepulsar/pulsar:4.2.4
     container_name: pulsar
     hostname: pulsar
     ports:
@@ -24,7 +24,7 @@ services:
 
   # Optional: Pulsar Manager for Web UI management
   pulsar-manager:
-    image: apachepulsar/pulsar-manager
+    image: apachepulsar/pulsar-manager:v0.4.0
     container_name: pulsar-manager
     ports:
       - 9527:9527   # Pulsar Manager UI

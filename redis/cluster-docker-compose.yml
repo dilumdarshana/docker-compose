@@ -10,7 +10,7 @@
 # Connect with: redis-cli -c -p 7001
 services:
   redis-cluster-1:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: redis-cluster-1
     hostname: redis-cluster-1
     ports:
@@ -32,7 +32,7 @@ services:
         ipv4_address: 172.22.0.2
 
   redis-cluster-2:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: redis-cluster-2
     hostname: redis-cluster-2
     ports:
@@ -54,7 +54,7 @@ services:
         ipv4_address: 172.22.0.3
 
   redis-cluster-3:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: redis-cluster-3
     hostname: redis-cluster-3
     ports:
@@ -76,7 +76,7 @@ services:
         ipv4_address: 172.22.0.4
 
   redis-cluster-4:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: redis-cluster-4
     hostname: redis-cluster-4
     ports:
@@ -98,7 +98,7 @@ services:
         ipv4_address: 172.22.0.5
 
   redis-cluster-5:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: redis-cluster-5
     hostname: redis-cluster-5
     ports:
@@ -120,7 +120,7 @@ services:
         ipv4_address: 172.22.0.6
 
   redis-cluster-6:
-    image: redis:7-alpine
+    image: redis:8-alpine
     container_name: redis-cluster-6
     hostname: redis-cluster-6
     ports:

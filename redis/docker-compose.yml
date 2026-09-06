@@ -1,7 +1,7 @@
 # Redis service for local development / caching
 services:
   redis:
-    image: redis:latest # Pin to a specific version in production, e.g. redis:7.2-alpine
+    image: redis:8-alpine
     container_name: my-redis
     ports:
       - "6379:6379" # host:container — change host port if 6379 is taken locally
