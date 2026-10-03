@@ -64,6 +64,43 @@ docker compose -f floci/docker-compose.yml up -d
 
 ---
 
+### Kafka
+
+Distributed event streaming platform in KRaft mode (no ZooKeeper). Runs on port `9092` with the Redpanda Console UI on `8081`.
+
+```bash
+docker compose -f kafka/docker-compose.yml up -d
+```
+
+| Port  | Usage                                        |
+|-------|----------------------------------------------|
+| 9092  | Client connections (from the host)           |
+| 8081  | Redpanda Console web UI                      |
+
+| Variable                                     | Value            |
+|----------------------------------------------|------------------|
+| `KAFKA_NODE_ID`                              | 1                |
+| `KAFKA_NUM_PARTITIONS`                       | 3                |
+| `KAFKA_LOG_RETENTION_HOURS`                  | 168 (7 days)     |
+
+- Single node running in KRaft **combined mode** (broker + controller), no ZooKeeper required
+- Two listeners: `PLAINTEXT` advertised as `localhost:9092` (host clients) and `INTERNAL` advertised as `kafka:19092` (the UI container)
+- Data stored in `kafka/data/`
+- Healthcheck via `kafka-broker-api-versions.sh` (15s interval, 5 retries)
+- Web UI at http://localhost:8081
+
+**CLI from inside the container:**
+
+```bash
+docker exec --workdir /opt/kafka/bin/ -it kafka-broker sh
+
+./kafka-topics.sh --bootstrap-server localhost:9092 --create --topic test-topic
+./kafka-console-producer.sh --bootstrap-server localhost:9092 --topic test-topic
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test-topic --from-beginning
+```
+
+---
+
 ### MongoDB
 
 Document database. Runs on port `27017`.

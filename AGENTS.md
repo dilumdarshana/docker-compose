@@ -26,6 +26,7 @@ The above will fail to start if `.env` is missing.
 |-------------|--------------------------------------|-----------------------------------|-------------------------|
 | ChromaDB    | `chromadb/server-docker-compose.yml` | 8000                              | `chromadb/chroma_data/` (bind) |
 | Floci       | `floci/docker-compose.yml`           | 4566                              | `floci/data/` (bind)    |
+| Kafka       | `kafka/docker-compose.yml`           | 9092, 8081                        | `kafka/data/` (bind)    |
 | MongoDB     | `mongo/docker-compose.yml`           | 27017                             | `mongo/mongodb_data/` (bind) |
 | PostgreSQL  | `postgres/docker-compose.yml`        | 5432                              | `postgres/postgres_data/` (bind) |
 | Qdrant      | `qdrant/docker-compose.yml`          | 6333, 6334                        | `qdrant/qdrant_data/` (bind) |
@@ -43,6 +44,7 @@ The above will fail to start if `.env` is missing.
 - **Redis Cluster** — 6 nodes on `172.22.0.0/24`; nodes advertise their container hostname via `--cluster-announce-*`. The cluster must be created once with `redis-cli --cluster create` after `up -d`.
 - **Chromadb** — CORS allow origins set to `['*']` (permissive; tighten for production).
 - **Floci** — mounts the host Docker socket (`/var/run/docker.sock`).
+- **Kafka** — KRaft combined mode, no ZooKeeper. Two listeners: `PLAINTEXT` advertised as `localhost:9092` for host clients, `INTERNAL` advertised as `kafka:19092` for the Redpanda Console container. `CLUSTER_ID` is fixed so the bind-mounted data dir stays valid across restarts.
 - **n8n** — contains hardcoded ngrok URLs in env vars (`N8N_EDITOR_BASE_URL`, `WEBHOOK_URL`). Replace these for your own tunnel.
 - **Pulsar** — runs in standalone mode with a healthcheck. Includes Pulsar Manager on port 9527.
 - **NATS** — JetStream enabled via `-js` CLI flag.
@@ -53,7 +55,7 @@ The above will fail to start if `.env` is missing.
 service-name/
 ├── docker-compose.yml          # main compose file
 ├── .env_example                # copy to .env before starting (n8n, redis only)
-├── .gitignore                  # local: redis/data; root: .env, n8n_data, mongodb_data, postgres_data
+├── .gitignore                  # local: redis/data; root: .env, kafka/data, n8n_data, mongodb_data, postgres_data
 └── data/                       # persistent data (bind mounts) — gitignored
 ```
 
